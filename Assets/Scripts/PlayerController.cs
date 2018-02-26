@@ -238,7 +238,7 @@ public class PlayerController : MonoBehaviour {
 				//has shield activated
 				shieldValue -= 1;
 				//AudioSource.PlayClipAtPoint(deflectingShotSound, transform.position);
-				if(shieldValue == 0){
+				if(shieldValue <= 0){
 					GameObject currentShieldSpawn = GameObject.FindGameObjectWithTag("Shield");
 					Destroy(currentShieldSpawn);
 					print("Should have destroyed the shield spawn");

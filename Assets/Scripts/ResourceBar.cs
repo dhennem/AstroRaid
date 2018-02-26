@@ -32,7 +32,7 @@ public class ResourceBar : MonoBehaviour {
 		UpdateTextDisplay();
 		if(typeOfResource == "Shield" && PlayerController.hasShieldActivated){
 			resourceValue = PlayerController.shieldValue;
-			print(maxValue);
+			//print(maxValue);
 		}
 		else if(typeOfResource == "Shield" && !PlayerController.hasShieldActivated){
 			resourceValue = 0;

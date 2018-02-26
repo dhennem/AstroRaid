@@ -29,6 +29,10 @@ public class EnemyBehavior : MonoBehaviour {
 	private LayerMask whatIsGround; //determines what layers are considered ground for the enemy
 	[SerializeField]
 	private Transform[] groundPoints;
+	[SerializeField]
+	private ResourceBar enemyHealthBar;
+	[SerializeField]
+	private Canvas enemyHealthCanvas;
 
 	// Use this for initialization
 	void Start () {
@@ -36,6 +40,9 @@ public class EnemyBehavior : MonoBehaviour {
 		player = FindObjectOfType<PlayerController>();
 		movingRight = false;
 		currentHealth = maxHealth;
+		enemyHealthCanvas.enabled = false; //do not show health bar at first
+		enemyHealthBar.ChangeMaxValue(maxHealth);
+		enemyHealthBar.resourceValue = currentHealth;
 	}
 	
 	// Update is called once per frame
@@ -74,6 +81,9 @@ public class EnemyBehavior : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D collision){
 		if(collision.collider.tag == "PlayerShot"){
+			if(!enemyHealthCanvas.isActiveAndEnabled){
+				enemyHealthCanvas.enabled = true; //only show health bar once enemy starts taking damage
+			}
 			if(currentHealth>1){
 				HandleNonFatalHits();
 			}
@@ -81,6 +91,7 @@ public class EnemyBehavior : MonoBehaviour {
 				HandleFatalHits();
 			}
 			currentHealth -= 1;
+			enemyHealthBar.resourceValue = currentHealth;
 		}
 	}
 
@@ -166,7 +177,7 @@ public class EnemyBehavior : MonoBehaviour {
 	void HandleFatalHits(){
 		GameObject lifeHeartSpawn = Instantiate(lifeHeart, transform.position, Quaternion.identity) as GameObject;
 		lifeHeartSpawn.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(-1f, 1f), 5f);
-		AudioSource.PlayClipAtPoint(deathSound, transform.position);
+		//AudioSource.PlayClipAtPoint(deathSound, transform.position);
 		Destroy(gameObject);
 	}
 	void HandleNonFatalHits(){
