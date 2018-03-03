@@ -10,6 +10,9 @@ public class ButtonControllers : MonoBehaviour {
 	public Button sButton;
 	public Button jpButton;
 	public Button sjButton;
+	/*public Color readyButtonColor;
+	public Color fadedButtonColor;*/
+
 
 	static public Button shieldButton;
 	static public Button jetpackButton;
@@ -21,9 +24,15 @@ public class ButtonControllers : MonoBehaviour {
 		shieldButton = sButton;
 		jetpackButton = jpButton;
 		superjumpButton = sjButton;
-		ToggleButtonInvisibility(shieldButton);
+		/*ToggleButtonInvisibility(shieldButton);
 		ToggleButtonInvisibility(jetpackButton);
-		ToggleButtonInvisibility(superjumpButton);
+		ToggleButtonInvisibility(superjumpButton);*/
+		shieldButton.gameObject.SetActive(false);
+		jetpackButton.gameObject.SetActive(false);
+		superjumpButton.gameObject.SetActive(false);
+		/*shieldButton.GetComponent<Image>().color = readyButtonColor;
+		jetpackButton.GetComponent<Image>().color = readyButtonColor;
+		superjumpButton.GetComponent<Image>().color = readyButtonColor;*/
 		
 	}
 	
@@ -41,7 +50,8 @@ public class ButtonControllers : MonoBehaviour {
 		}
 		else{
 			print("Trying to make superpower button visible");
-			button.gameObject.SetActive(true); 
+			button.gameObject.SetActive(true);
+			//button.GetComponent<Image>().color = readyButtonColor; 
 		}
 	}
 
@@ -67,5 +77,21 @@ public class ButtonControllers : MonoBehaviour {
 		if(PlayerController.superpower == 3){
 			ToggleButtonInvisibility(superjumpButton);
 		}
+	}
+	public void fadeButtons(){
+		/*switch(PlayerController.superpower){
+			case 1:
+				//fade shield button
+				shieldButton.GetComponent<Image>().color = fadedButtonColor;
+				break;
+			case 2:
+				//fade jetpack button
+				jetpackButton.GetComponent<Image>().color = fadedButtonColor;
+				break;
+			case 3:
+				//fade SJ button
+				superjumpButton.GetComponent<Image>().color = fadedButtonColor;
+				break;
+		}*/
 	}
 }

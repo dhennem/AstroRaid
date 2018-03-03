@@ -71,15 +71,17 @@ public class PlayerController : MonoBehaviour {
 		else{
 			HandleJetpack();
 		}
-		if(Input.GetKeyDown(KeyCode.Space)){
+		if(Input.GetKeyDown(KeyCode.Space)){   //player shoots when the space bar is pressed
 			Shoot();
 		}
 		HandleTurning();
 		isGrounded = DetermineIfGrounded();
 	}
 
+
+	//handles what happens to player movement when they are grounded and when they are in the air
 	void HandleMovement(){
-		transform.rotation = Quaternion.identity;
+		transform.rotation = Quaternion.identity; //prevents player sprite from rotating/falling over
 		if(GetComponent<Rigidbody2D>().velocity.y < -10f){
 			readyToTakeFallDamage = true;   //now, whenever the player collides with something, they take fall damage
 		}
@@ -147,6 +149,8 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+
+	//when the player has the jetpack powerup activated, this method controls player movement
 	void HandleJetpack(){
 		transform.rotation = Quaternion.identity;
 		Vector2 currentVelocity = GetComponent<Rigidbody2D>().velocity;
@@ -178,6 +182,7 @@ public class PlayerController : MonoBehaviour {
 		
 	}
 
+	//handles player shooting
 	void Shoot(){
 		if(facingLeft){
 			GameObject shotSpawn = Instantiate(shot, transform.position, Quaternion.identity) as GameObject;
@@ -190,6 +195,7 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	//handles player turning
 	void HandleTurning(){
 		if(facingLeft){
 			GetComponent<SpriteRenderer>().flipX = true;
@@ -199,6 +205,7 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	//determines whether the player is currently grounded (touching the ground or a platform)
 	bool DetermineIfGrounded(){
 		if(GetComponent<Rigidbody2D>().velocity.y <= 0f){
 			foreach(Transform groundPoint in groundPoints){
@@ -215,6 +222,7 @@ public class PlayerController : MonoBehaviour {
 
 
 	void OnCollisionEnter2D(Collision2D collision){
+		//handles fall damage when the player collides with the ground at a high velocity
 		if(readyToTakeFallDamage){
 			readyToTakeFallDamage = false;
 			HandleFallDamage();
@@ -275,6 +283,7 @@ public class PlayerController : MonoBehaviour {
 		healthBar.resourceValue = currentHealth;
 	}
 
+	//when the player picks up a life heart, their health is increased and the health bar UI must be adjusted accordingly
 	public void HandleLifeHeartPickups(int heartValue){
 		if(currentHealth + heartValue > healthBar.GetMaxValue()){
 			healthBar.ChangeMaxValue(healthBar.GetMaxValue() + heartValue);
@@ -283,6 +292,7 @@ public class PlayerController : MonoBehaviour {
 		healthBar.resourceValue = currentHealth;	
 	}
 
+	//called when the sprint button is clicked, increasing the player's run speed
 	public void ToggleSprint(){
 		if(!sprinting){
 			sprinting = true;
@@ -295,6 +305,7 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
+	//called when the player clicks the button to activate their current superpower
 	public void ActivateNewSuperpower(){
 		switch(superpower){
 			case 0:
@@ -309,6 +320,8 @@ public class PlayerController : MonoBehaviour {
 				ActivateSuperjump();
 				break;
 		}
+		 //fade the button to show it is activated
+	 	//buttonControllers.fadeButtons();
 		
 	}
 

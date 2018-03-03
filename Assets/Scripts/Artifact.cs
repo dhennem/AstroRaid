@@ -37,10 +37,10 @@ public class Artifact : MonoBehaviour {
 
 	//handles what happens when the player picks up an artifact
 	void HandlePickups(){
-		AudioSource.PlayClipAtPoint(collectedSound, transform.position);
+		//AudioSource.PlayClipAtPoint(collectedSound, transform.position);
 		artifactsCollected +=1;
 		Destroy(gameObject);
-		CheckPortalSpawn();
+		CheckPortalSpawn(); //portal to next level is spawned once player has gathered all artifacts
 	}
 
 
