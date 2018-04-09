@@ -29,7 +29,7 @@ public class MysteryBox : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D collider){
 		if(collider.name == "Player"){
-			//AudioSource.PlayClipAtPoint(collectedSound, transform.position);
+			AudioSource.PlayClipAtPoint(collectedSound, transform.position);
 			Destroy(gameObject);
 			print(PlayerController.superpower);
 			if(PlayerController.superpower==0){ //if the player already has a superpower, do nothing

@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class ShotBehavior : MonoBehaviour {
 
+	[SerializeField]
+	private AudioClip shotSound;
+
 	// Use this for initialization
 	void Start () {
-		
+		AudioSource.PlayClipAtPoint(shotSound, transform.position);
 	}
 	
 	// Update is called once per frame

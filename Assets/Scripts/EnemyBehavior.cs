@@ -33,6 +33,8 @@ public class EnemyBehavior : MonoBehaviour {
 	private ResourceBar enemyHealthBar;
 	[SerializeField]
 	private Canvas enemyHealthCanvas;
+	[SerializeField]
+	private AudioClip enemyShotSound;
 
 	// Use this for initialization
 	void Start () {
@@ -194,6 +196,7 @@ public class EnemyBehavior : MonoBehaviour {
 			enemyShotSpawn.GetComponent<Rigidbody2D>().velocity = new Vector2(15f,0f);
 			enemyShotSpawn.GetComponent<SpriteRenderer>().flipX = false;
 		}
+		AudioSource.PlayClipAtPoint(enemyShotSound, transform.position);
 		
 	}
 

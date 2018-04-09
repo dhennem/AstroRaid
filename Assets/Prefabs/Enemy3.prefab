@@ -251,7 +251,7 @@ MonoBehaviour:
   lifeHeart: {fileID: 1412772779973202, guid: df5b2ecefa07444d9a94216dfb15a395, type: 2}
   maxHealth: 3
   chanceOfShooting: 0
-  deathSound: {fileID: 0}
+  deathSound: {fileID: 8300000, guid: b9bf911ef22664a5aaf88582d53050f9, type: 3}
   groundRadius: 0.2
   whatIsGround:
     serializedVersion: 2
@@ -261,6 +261,7 @@ MonoBehaviour:
   - {fileID: 4050283646413294}
   enemyHealthBar: {fileID: 114629890340822296}
   enemyHealthCanvas: {fileID: 223642891885362620}
+  enemyShotSound: {fileID: 8300000, guid: be428ccbe4cb84dec802efb7f5a676fb, type: 3}
 --- !u!114 &114044751186500256
 MonoBehaviour:
   m_ObjectHideFlags: 1

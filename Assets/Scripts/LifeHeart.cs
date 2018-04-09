@@ -7,6 +7,8 @@ public class LifeHeart : MonoBehaviour {
 	public int LifeHeartValue; //defined in the inspector differently for different prefabs
 
 	private PlayerController player;
+	[SerializeField]
+	private AudioClip pickupSound;
 
 
 	// Use this for initialization
@@ -23,6 +25,7 @@ public class LifeHeart : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D collision){
 		if(collision.collider.gameObject.tag == "Player"){
 			player.HandleLifeHeartPickups(LifeHeartValue);
+			AudioSource.PlayClipAtPoint(pickupSound, transform.position);
 			Destroy(gameObject);
 		}
 	}

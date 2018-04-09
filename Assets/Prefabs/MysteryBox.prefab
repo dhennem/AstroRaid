@@ -127,7 +127,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonControllers: {fileID: 114809550493784960, guid: 7cf683899eeb84c209cee03ebaea46aa,
     type: 2}
+  playerCollider: {fileID: 0}
   mysteryBoxCollider: {fileID: 61318671387444040}
+  collectedSound: {fileID: 8300000, guid: da6169324ff3842f4b744fb00da8106b, type: 3}
 --- !u!212 &212120106778179548
 SpriteRenderer:
   m_ObjectHideFlags: 1

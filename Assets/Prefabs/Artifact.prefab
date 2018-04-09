@@ -127,7 +127,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   portalSpawner: {fileID: 114659949304984714, guid: e3834a89540c241148aa312117f1a753,
     type: 2}
+  playerCollider: {fileID: 0}
   artifactCollider: {fileID: 61185572717651912}
+  collectedSound: {fileID: 8300000, guid: da6169324ff3842f4b744fb00da8106b, type: 3}
 --- !u!212 &212120106778179548
 SpriteRenderer:
   m_ObjectHideFlags: 1

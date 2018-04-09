@@ -32,6 +32,9 @@ public class PlayerController : MonoBehaviour {
 	private AudioClip takingDamageSound;
 	[SerializeField]
 	private AudioClip deflectingShotSound;
+	[SerializeField]
+	private AudioClip jumpingSound;
+	private AudioSource jetpackAudioSource;
 
 
 
@@ -60,6 +63,8 @@ public class PlayerController : MonoBehaviour {
 		shieldBar.resourceValue = 0f;
 		shieldBar.ChangeMinValue(0f);
 		shieldBar.ChangeMaxValue(1f);
+		jetpackAudioSource = GetComponent<AudioSource>();
+		jetpackAudioSource.mute = true; //jetpack sound will only be unmuted if it is being used
 		
 	}
 	
@@ -95,6 +100,7 @@ public class PlayerController : MonoBehaviour {
 					//jump normally
 					GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 10f); //maintain original x velocity during a jump
 				}
+				AudioSource.PlayClipAtPoint(jumpingSound, transform.position);
 			}
 			//on the ground or a platform, running left
 			else if(Input.GetKey(KeyCode.LeftArrow)){
@@ -118,6 +124,7 @@ public class PlayerController : MonoBehaviour {
 					//jump normally
 					GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 10f); //maintain original x velocity during a jump
 				}
+				AudioSource.PlayClipAtPoint(jumpingSound, transform.position);
 			}
 			else{ //no key pressed, stop movement
 				GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
@@ -158,15 +165,19 @@ public class PlayerController : MonoBehaviour {
 			GetComponent<Rigidbody2D>().velocity = new Vector2(-5f, 5f); 
 			facingRight = false;
 			facingLeft = true;
+			jetpackAudioSource.mute = false;
 		}
 		else if(Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.RightArrow)){
 			GetComponent<Rigidbody2D>().velocity = new Vector2(5f, 5f); 
 			facingLeft = false;
 			facingRight = true;
+			jetpackAudioSource.mute = false;
 		}
 		else{
+			jetpackAudioSource.mute = true;
 			if(Input.GetKey(KeyCode.UpArrow)){
-				GetComponent<Rigidbody2D>().velocity = new Vector2(currentVelocity.x, 5f); 
+				GetComponent<Rigidbody2D>().velocity = new Vector2(currentVelocity.x, 5f);
+				jetpackAudioSource.mute = false; 
 			}
 			if(Input.GetKey(KeyCode.LeftArrow)){
 				GetComponent<Rigidbody2D>().velocity = new Vector2(-5f, currentVelocity.y);
@@ -245,7 +256,7 @@ public class PlayerController : MonoBehaviour {
 			else{
 				//has shield activated
 				shieldValue -= 1;
-				//AudioSource.PlayClipAtPoint(deflectingShotSound, transform.position);
+				AudioSource.PlayClipAtPoint(deflectingShotSound, transform.position);
 				if(shieldValue <= 0){
 					GameObject currentShieldSpawn = GameObject.FindGameObjectWithTag("Shield");
 					Destroy(currentShieldSpawn);
@@ -260,11 +271,13 @@ public class PlayerController : MonoBehaviour {
 
 	void HandleNonFatalHits(){
 		//called when the player takes a hit that wouldn't kill them
+		AudioSource.PlayClipAtPoint(takingDamageSound,transform.position); //play taking damage sound
 	}
 
 	void HandleFatalHits(){
 		//called when the player takes a hit that kills them
 		//put in a death animation here
+		AudioSource.PlayClipAtPoint(deathSound,transform.position); //play death sound
 		levelManager.LoadLoseWithPause();
 	}
 
@@ -357,5 +370,6 @@ public class PlayerController : MonoBehaviour {
 		hasSuperjumpActivated = false;
 		buttonControllers.DeactivateSuperpowerButton();
 		superpower = 0;
+		jetpackAudioSource.mute = true;
 	}
 }
