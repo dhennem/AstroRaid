@@ -83,6 +83,10 @@ public class EnemyBehavior : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D collision){
 		if(collision.collider.tag == "PlayerShot"){
+			if(!isMoving){
+				isMoving = true;
+				shooting = true;
+			}
 			if(!enemyHealthCanvas.isActiveAndEnabled){
 				enemyHealthCanvas.enabled = true; //only show health bar once enemy starts taking damage
 			}
