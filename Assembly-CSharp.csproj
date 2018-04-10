@@ -61,6 +61,7 @@
      <Compile Include="Assets\Scripts\HeaderManager.cs" />
      <Compile Include="Assets\Scripts\LevelManager.cs" />
      <Compile Include="Assets\Scripts\LifeHeart.cs" />
+     <Compile Include="Assets\Scripts\LoseCollider.cs" />
      <Compile Include="Assets\Scripts\MovingPlatform.cs" />
      <Compile Include="Assets\Scripts\MusicPlayer.cs" />
      <Compile Include="Assets\Scripts\MysteryBox.cs" />

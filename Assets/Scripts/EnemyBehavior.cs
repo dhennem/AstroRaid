@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class EnemyBehavior : MonoBehaviour {
 
+	//maxHealth and chanceOfShooting should be dependent on difficulty level
+
 	public GameObject shot;
 	public float movementRange; //number of world units left and right the enemy is allowed to move
 	public GameObject lifeHeart;
 
 	private PlayerController player;
-	[SerializeField]
 	private int maxHealth;
 	private int currentHealth;
 	private bool shooting;
-	[SerializeField]
-	private int chanceOfShooting; //chance of shooting per frame
 
 	private bool rightOfPlayer;
 	private bool movingRight;
 	private bool isMoving;
 	private bool waitingAtEdge;
+	private int gameDifficulty;
 
 	[SerializeField]
 	private AudioClip deathSound;
@@ -38,6 +38,8 @@ public class EnemyBehavior : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		gameDifficulty = (int) PlayerPrefsManager.GetDifficulty();
+		maxHealth = gameDifficulty + 2; //enemy health indicated by value of difficulty
 		shooting = false;
 		player = FindObjectOfType<PlayerController>();
 		movingRight = false;
@@ -60,7 +62,7 @@ public class EnemyBehavior : MonoBehaviour {
 			HandleMovement();
 		}
 		if(shooting){
-			if(Random.Range(0,100) < 1){  //1% chance of shooting each frame
+			if(Random.Range(0,100) < (.5*gameDifficulty)){  //.5 * difficulty% chance of shooting each frame
 				Shoot();
 			}
 		}

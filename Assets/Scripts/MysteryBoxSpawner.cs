@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class MysteryBoxSpawner : MonoBehaviour {
 
+
 	public GameObject mysteryBox;
 
-	public int numBoxesToSpawn; //defined in the inspector
+	private int numBoxesToSpawn; //defined relative to the game difficulty
 
 	private int numSpawnPositions;
+	private int gameDifficulty;
 
 	// Use this for initialization
 	void Start () {
 		numSpawnPositions = transform.childCount;
+		gameDifficulty = (int) PlayerPrefsManager.GetDifficulty();
+		numBoxesToSpawn = numSpawnPositions - gameDifficulty + 1;
 		SpawnMysteryBoxes();
 		
 	}

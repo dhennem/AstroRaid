@@ -16,6 +16,7 @@ public class SettingsController : MonoBehaviour {
 		musicPlayer = GameObject.FindObjectOfType<MusicPlayer>();
 
 		volumeSlider.value = PlayerPrefsManager.GetMasterVolume();
+		difficultySlider.value = PlayerPrefsManager.GetDifficulty();
 		
 	}
 	
@@ -26,6 +27,7 @@ public class SettingsController : MonoBehaviour {
 
 	public void SaveAndExit(){
 		PlayerPrefsManager.SetMasterVolume(volumeSlider.value);
+		PlayerPrefsManager.SetDifficulty(difficultySlider.value);
 		levelManager.LoadLevel("Start");
 	}
 

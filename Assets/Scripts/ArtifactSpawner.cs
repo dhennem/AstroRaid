@@ -4,23 +4,29 @@ using UnityEngine;
 
 public class ArtifactSpawner : MonoBehaviour {
 
+	//numArtifactsToSpawn should be affected by difficulty level
+
 	public GameObject artifact; //defined as the artifact prefab in the inspector
 
 	private int numSpawnPositions;
 
-	public int numArtifactsToSpawn; //defined in the inspector
+	private int numArtifactsToSpawn; //defined relative to game difficulty
 
 	//accessed in the header
 	static public int totalNumArtifacts;
 
+	private int gameDificulty;
+
 
 	void Awake(){
+		gameDificulty = (int) PlayerPrefsManager.GetDifficulty();
+		numSpawnPositions = transform.childCount;
+		numArtifactsToSpawn = numSpawnPositions - (8-gameDificulty);
 		totalNumArtifacts = numArtifactsToSpawn;
 	}
 
 	// Use this for initialization
 	void Start () {
-		numSpawnPositions = transform.childCount;
 		SpawnArtifacts();
 		
 	}

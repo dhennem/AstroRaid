@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+	//superpower length, maxHealth, and value of life heart should be affected by difficulty level
+
 	public ButtonControllers buttonControllers;
 	public LevelManager levelManager;
 	public GameObject shield;
@@ -35,6 +37,7 @@ public class PlayerController : MonoBehaviour {
 	[SerializeField]
 	private AudioClip jumpingSound;
 	private AudioSource jetpackAudioSource;
+	private int gameDifficulty;
 
 
 
@@ -51,6 +54,8 @@ public class PlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		gameDifficulty = (int) PlayerPrefsManager.GetDifficulty();
+		maxHealth = (int) Mathf.Clamp((5-gameDifficulty)*3 + 4, 5f, 15f); //player max health depends on game difficulty
 		facingLeft = false;
 		facingRight = false;
 		isGrounded = true;
@@ -72,6 +77,7 @@ public class PlayerController : MonoBehaviour {
 	void Update () {
 		if(!hasJetpackActivated){ 
 			HandleMovement();
+			jetpackAudioSource.mute = true;
 		}
 		else{
 			HandleJetpack();
@@ -247,7 +253,7 @@ public class PlayerController : MonoBehaviour {
 				else{
 					HandleFatalHits();
 				}
-				currentHealth -=1;
+				currentHealth = (int)Mathf.Clamp(currentHealth-1, 0f, maxHealth); //health cannot go below 0
 				if(currentHealth<=maxHealth && healthBar.GetMaxValue() > maxHealth){
 					healthBar.ChangeMaxValue(maxHealth);
 				}
