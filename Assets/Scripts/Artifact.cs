@@ -47,6 +47,7 @@ public class Artifact : MonoBehaviour {
 	//spawning a portal to enter the next level once all artifacts are collected
 	void CheckPortalSpawn(){
 		if(artifactsCollected == ArtifactSpawner.totalNumArtifacts){
+			print("spawning portal");
 			portalSpawner.SpawnWinPortal();
 		}
 	}

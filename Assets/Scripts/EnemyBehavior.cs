@@ -207,7 +207,7 @@ public class EnemyBehavior : MonoBehaviour {
 	}
 
 	bool isInRangeOfPlayer(){
-		return (Mathf.Abs(transform.position.x-player.transform.position.x)<7 && Mathf.Abs(transform.position.y-player.transform.position.y)<5);
+		return (Mathf.Abs(transform.position.x-player.transform.position.x)<10.5 && Mathf.Abs(transform.position.y-player.transform.position.y)<5);
 	}
 
 	bool isTooCloseToPlayer(){

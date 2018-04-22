@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 50516674082006386}
   - component: {fileID: 114284959180206392}
   - component: {fileID: 82530357430277920}
+  - component: {fileID: 95630230478163636}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -256,6 +257,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!95 &95630230478163636
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1118824084051714}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 63761e5781517461eb6d495e92eb0fc5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114284959180206392
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -276,8 +294,8 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   shieldBar: {fileID: 114270273137893478, guid: 85b8d8e7972c143aa9fdbb206d0700b3,
     type: 2}
-  maxHealth: 100
-  groundRadius: 0.001
+  maxHealth: 10
+  groundRadius: 0.1
   groundPoints:
   - {fileID: 4284091704389154}
   - {fileID: 4197990714004400}

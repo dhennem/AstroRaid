@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour {
 
 	private bool facingLeft;
 	private bool facingRight;
+	private bool running;
 	private bool sprinting;
 	private GameObject shieldSpawn;
 	private bool readyToTakeFallDamage;
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour {
 	private Transform[] groundPoints; //defined in the inspector to contain all of the ground points of the player
 	[SerializeField]
 	private LayerMask whatIsGround; //determines what layers are considered ground for the player
+	private Animator playerAnimator;
 	[SerializeField]
 	private AudioClip deathSound;
 	[SerializeField]
@@ -68,6 +70,7 @@ public class PlayerController : MonoBehaviour {
 		shieldBar.resourceValue = 0f;
 		shieldBar.ChangeMinValue(0f);
 		shieldBar.ChangeMaxValue(1f);
+		playerAnimator = GetComponent<Animator>();
 		jetpackAudioSource = GetComponent<AudioSource>();
 		jetpackAudioSource.mute = true; //jetpack sound will only be unmuted if it is being used
 		
@@ -75,6 +78,9 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		//playerAnimator.SetBool("shootingWhileRunning", false);
+
 		if(!hasJetpackActivated){ 
 			HandleMovement();
 			jetpackAudioSource.mute = true;
@@ -83,6 +89,7 @@ public class PlayerController : MonoBehaviour {
 			HandleJetpack();
 		}
 		if(Input.GetKeyDown(KeyCode.Space)){   //player shoots when the space bar is pressed
+			playerAnimator.SetTrigger("shoot");
 			Shoot();
 		}
 		HandleTurning();
@@ -93,7 +100,7 @@ public class PlayerController : MonoBehaviour {
 	//handles what happens to player movement when they are grounded and when they are in the air
 	void HandleMovement(){
 		transform.rotation = Quaternion.identity; //prevents player sprite from rotating/falling over
-		if(GetComponent<Rigidbody2D>().velocity.y < -10f){
+		if(GetComponent<Rigidbody2D>().velocity.y < -15f){
 			readyToTakeFallDamage = true;   //now, whenever the player collides with something, they take fall damage
 		}
 		if(isGrounded){
@@ -113,12 +120,16 @@ public class PlayerController : MonoBehaviour {
 				GetComponent<Rigidbody2D>().velocity = new Vector2(-5f*speedMultiplier, 0f);
 				facingRight = false;
 				facingLeft = true;
+				running = true;
+				playerAnimator.SetBool("running", true);
 			}
 			//on the ground or a platform, running right
 			else if(Input.GetKey(KeyCode.RightArrow)){
 				GetComponent<Rigidbody2D>().velocity = new Vector2(5f*speedMultiplier, 0f);
 				facingLeft = false;
 				facingRight = true;
+				running = true;
+				playerAnimator.SetBool("running", true);
 			}
 			//jumping from the ground or a platform
 			else if(Input.GetKeyDown(KeyCode.UpArrow)){ //player cannot double jump
@@ -134,9 +145,13 @@ public class PlayerController : MonoBehaviour {
 			}
 			else{ //no key pressed, stop movement
 				GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
+				running = false;
+				playerAnimator.SetBool("running", false);
 			}
 		}
 		else{ //handles midair movement
+			running = false;
+			playerAnimator.SetBool("running", false);
 			//this allows the player to move slightly left while jumping
 			if(Input.GetKeyDown(KeyCode.LeftArrow)){
 				if(hasSuperjumpActivated){
@@ -295,7 +310,7 @@ public class PlayerController : MonoBehaviour {
 		else{
 			HandleFatalHits();
 		}
-		currentHealth -=1;
+		currentHealth = (int)Mathf.Clamp(currentHealth-1, 0f, maxHealth); //health cannot go below 0
 		if(currentHealth<=maxHealth && healthBar.GetMaxValue() > maxHealth){
 			healthBar.ChangeMaxValue(maxHealth);
 		}
@@ -378,4 +393,10 @@ public class PlayerController : MonoBehaviour {
 		superpower = 0;
 		jetpackAudioSource.mute = true;
 	}
+
+
+	void turnOffShootingWhileRunningAnim(){
+		playerAnimator.SetBool("shootingWhileRunning", false);
+	}
+
 }
