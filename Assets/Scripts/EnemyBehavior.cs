@@ -19,6 +19,7 @@ public class EnemyBehavior : MonoBehaviour {
 	private bool movingRight;
 	private bool isMoving;
 	private bool waitingAtEdge;
+	private bool waitingAtWall;
 	private int gameDifficulty;
 
 	[SerializeField]
@@ -35,6 +36,15 @@ public class EnemyBehavior : MonoBehaviour {
 	private Canvas enemyHealthCanvas;
 	[SerializeField]
 	private AudioClip enemyShotSound;
+	[SerializeField]
+	private float wallRadius;
+	[SerializeField]
+	private LayerMask whatIsWall; //determines what layers are considered a wall for the enemy
+	[SerializeField]
+	private Transform[] leftWallPoints;
+	[SerializeField]
+	private Transform[] rightWallPoints;
+
 
 	// Use this for initialization
 	void Start () {
@@ -51,27 +61,28 @@ public class EnemyBehavior : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(!shooting && !isMoving && isInRangeOfPlayer()){ //only start enemy shooting and movement when they are close to player
-			shooting = true;
-			isMoving = true;
-			//InvokeRepeating("Shoot", 0.5f, 2f);
-		}
-		DeterminePositionRelativeToPlayer();
-		HandleDirection();
-		if(isMoving && !isTooCloseToPlayer()){
-			HandleMovement();
-		}
-		if(shooting){
-			if(Random.Range(0,100) < (.5*gameDifficulty)){  //.5 * difficulty% chance of shooting each frame
-				Shoot();
+		if(player!=null){
+			if(!shooting && !isMoving && isInRangeOfPlayer()){ //only start enemy shooting and movement when they are close to player
+				shooting = true;
+				isMoving = true;
+				//InvokeRepeating("Shoot", 0.5f, 2f);
+			}
+			DeterminePositionRelativeToPlayer();
+			HandleDirection();
+			if(isMoving && !isTooCloseToPlayer()){
+				HandleMovement();
+			}
+			if(shooting){
+				if(Random.Range(0,100) < (Mathf.Clamp(0.5f*gameDifficulty, 0.5f, 1.5f))){  //.5 * difficulty% chance of shooting each frame
+					Shoot();
+				}
+			}
+			if(isInRangeOfPlayer()){
+				if(DetermineIfHittingLeftWall()) print("hitting left wall");
+				if(DetermineIfHittingRightWall()) print("hitting right wall");
+
 			}
 		}
-		/*if(isInRangeOfPlayer()){
-			if(waitingAtEdge) print("waiting at edge");
-			if(DetermineIfGroundedOnLeft()) print("grounded on left");
-			if(DetermineIfGroundedOnRight()) print("grounded on right");
-
-		}*/
 		
 	}
 
@@ -106,10 +117,13 @@ public class EnemyBehavior : MonoBehaviour {
 	void HandleMovement(){
 		bool isGrounded = DetermineIfGroundedOnLeft() && DetermineIfGroundedOnRight();
 		if(isInRangeOfPlayer()){
-			print(isGrounded);
+			//print(isGrounded);
 		}
 		if(!isGrounded){
 			waitingAtEdge = true;
+		}
+		if(DetermineIfHittingLeftWall() || DetermineIfHittingRightWall()){
+			waitingAtWall = true;
 		}
 		if (waitingAtEdge){  //not grounded
 			if(DetermineIfGroundedOnLeft() && !DetermineIfGroundedOnRight()){ //hanging off a right edge
@@ -135,7 +149,28 @@ public class EnemyBehavior : MonoBehaviour {
 				waitingAtEdge = false;
 			}
 		}
-		/*else*/ if(!waitingAtEdge /*&& isGrounded*/){
+		if(waitingAtWall){
+			if(DetermineIfHittingLeftWall() && !DetermineIfHittingRightWall()){ //hitting a left wall
+				if(!rightOfPlayer){
+					waitingAtWall = false;
+				}
+				else{
+					waitingAtWall = true;
+				}
+			}
+			else if(!DetermineIfHittingLeftWall() && DetermineIfHittingRightWall()){ //hitting a right wall
+				if(!rightOfPlayer){
+					waitingAtWall = true;
+				}
+				else{
+					waitingAtWall = false;
+				}
+			}
+			else{
+				waitingAtWall = false;
+			}
+		}
+		if(!waitingAtEdge && !waitingAtWall){
 			if(movingRight){ //move right
 				Vector3 currentPosition = transform.position;
 				Vector3 newPosition = new Vector3(currentPosition.x+0.05f, currentPosition.y, 0f);
@@ -165,6 +200,30 @@ public class EnemyBehavior : MonoBehaviour {
 			if(colliders[i].gameObject.layer != 9){ //if the right ground point is colliding with something other than the player, then the player is grounded on the right
 				return true;
 			}
+		}
+		return false;
+	}
+
+	bool DetermineIfHittingLeftWall(){ //determines if an enemy's left side is touching a wall
+		foreach(Transform leftWallPoint in leftWallPoints){
+				Collider2D[] colliders = Physics2D.OverlapCircleAll(leftWallPoint.position, wallRadius, whatIsWall);
+				for(int i = 0; i < colliders.Length; i++){
+					if(colliders[i].gameObject != gameObject){ //if one of the ground points is colliding with something other than the player, then the player is grounded
+						return true;
+					}
+				}
+		}
+		return false;
+	}
+
+	bool DetermineIfHittingRightWall(){ //determines if an enemy's right side is touching a wall
+		foreach(Transform rightWallPoint in rightWallPoints){
+				Collider2D[] colliders = Physics2D.OverlapCircleAll(rightWallPoint.position, wallRadius, whatIsWall);
+				for(int i = 0; i < colliders.Length; i++){
+					if(colliders[i].gameObject != gameObject/* and layer of collider is the ground layer*/){ //if one of the ground points is colliding with something other than the player, then the player is grounded
+						return true;
+					}
+				}
 		}
 		return false;
 	}

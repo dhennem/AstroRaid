@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour {
 	//defined in the inspector differently for each level
 	public int maxHealth;
 	static public int shieldValue;
+	public float originalMaxHealth;
 
 	private bool facingLeft;
 	private bool facingRight;
@@ -40,6 +41,8 @@ public class PlayerController : MonoBehaviour {
 	private AudioClip jumpingSound;
 	private AudioSource jetpackAudioSource;
 	private int gameDifficulty;
+	private bool ableToShoot;
+	private bool canTakeDamage;
 
 
 
@@ -57,7 +60,8 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		gameDifficulty = (int) PlayerPrefsManager.GetDifficulty();
-		maxHealth = (int) Mathf.Clamp((5-gameDifficulty)*3 + 4, 5f, 15f); //player max health depends on game difficulty
+		originalMaxHealth = Mathf.Clamp((5-gameDifficulty)*3 + 4, 5f, 15f); //player max health depends on game difficulty
+		maxHealth = (int) originalMaxHealth;
 		facingLeft = false;
 		facingRight = false;
 		isGrounded = true;
@@ -73,6 +77,8 @@ public class PlayerController : MonoBehaviour {
 		playerAnimator = GetComponent<Animator>();
 		jetpackAudioSource = GetComponent<AudioSource>();
 		jetpackAudioSource.mute = true; //jetpack sound will only be unmuted if it is being used
+		ableToShoot = true;
+		canTakeDamage = true;
 		
 	}
 	
@@ -88,9 +94,11 @@ public class PlayerController : MonoBehaviour {
 		else{
 			HandleJetpack();
 		}
-		if(Input.GetKeyDown(KeyCode.Space)){   //player shoots when the space bar is pressed
+		if(Input.GetKeyDown(KeyCode.X) && ableToShoot){   //player shoots when the space bar is pressed
 			playerAnimator.SetTrigger("shoot");
 			Shoot();
+			ableToShoot = false;
+			Invoke("turnOnAbilityToShoot", 0.5f);
 		}
 		HandleTurning();
 		isGrounded = DetermineIfGrounded();
@@ -260,7 +268,7 @@ public class PlayerController : MonoBehaviour {
 			HandleFallDamage();
 		}
 
-		if((collision.collider.gameObject.layer == 12 || collision.collider.gameObject.layer == 9)){ //player struck by enemy or enemy shot
+		if((collision.collider.gameObject.layer == 12 || collision.collider.gameObject.layer == 9) && canTakeDamage){ //player struck by enemy or enemy shot
 			if(!hasShieldActivated){
 				if(currentHealth > 1){
 					HandleNonFatalHits();
@@ -285,6 +293,8 @@ public class PlayerController : MonoBehaviour {
 					DeactivateSuperpower();
 				}
 			}
+			canTakeDamage = false;
+			Invoke("turnOnAbilityToTakeDamage", 1.0f);
 		}
 
 
@@ -330,7 +340,7 @@ public class PlayerController : MonoBehaviour {
 	public void ToggleSprint(){
 		if(!sprinting){
 			sprinting = true;
-			speedMultiplier = 2f;
+			speedMultiplier = 1.5f;
 		}
 		else{
 			sprinting = false;
@@ -361,12 +371,14 @@ public class PlayerController : MonoBehaviour {
 
 	void ActivateShield(){
 		print("shield activated");
-		hasShieldActivated = true;
-		shieldSpawn = Instantiate(shield, transform.position, Quaternion.identity) as GameObject;
-		//shieldSpawn.transform.parent = transform; //ensures that the shield always stays at the same position as the player while active
-		shieldBar.resourceValue = shieldBar.GetMaxValue();
-		shieldValue = 5;
-		//Invoke("DeactivateSuperpower", 5f);
+		if(!hasShieldActivated){
+			hasShieldActivated = true;
+			shieldSpawn = Instantiate(shield, transform.position, Quaternion.identity) as GameObject;
+			//shieldSpawn.transform.parent = transform; //ensures that the shield always stays at the same position as the player while active
+			shieldBar.resourceValue = shieldBar.GetMaxValue();
+			shieldValue = 5;
+			//Invoke("DeactivateSuperpower", 5f);
+		}
 	}
 	void ActivateJetpack(){
 		print("jetpack activated");
@@ -381,7 +393,7 @@ public class PlayerController : MonoBehaviour {
 
 
 
-	void DeactivateSuperpower(){
+	public void DeactivateSuperpower(){
 		print("Deactivating superpower");
 		if(hasShieldActivated){
 			shieldBar.resourceValue = shieldBar.GetMinValue();
@@ -397,6 +409,14 @@ public class PlayerController : MonoBehaviour {
 
 	void turnOffShootingWhileRunningAnim(){
 		playerAnimator.SetBool("shootingWhileRunning", false);
+	}
+
+	void turnOnAbilityToShoot(){
+		ableToShoot = true;
+	}
+
+	void turnOnAbilityToTakeDamage(){
+		canTakeDamage = true;
 	}
 
 }

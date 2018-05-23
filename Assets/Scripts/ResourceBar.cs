@@ -48,7 +48,7 @@ public class ResourceBar : MonoBehaviour {
 	}
 
 	private void UpdateTextDisplay(){
-		resourceDisplay.text = typeOfResource + ": " + resourceValue.ToString();
+		resourceDisplay.text = /*typeOfResource + ": " + */resourceValue.ToString();
 	}
 
 	public void ChangeMaxValue(float newValue){

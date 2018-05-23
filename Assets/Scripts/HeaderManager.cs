@@ -25,7 +25,7 @@ public class HeaderManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		artifactDisplay.text = "Artifacts: " + Artifact.artifactsCollected.ToString() + "/" + ArtifactSpawner.totalNumArtifacts.ToString();
+		artifactDisplay.text = "Artifacts: " + Artifact.artifactsCollected.ToString() + "/ " + ArtifactSpawner.totalNumArtifacts.ToString();
 		
 	}
 }

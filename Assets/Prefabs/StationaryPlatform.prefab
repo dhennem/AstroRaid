@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 61949968503044712}
   - component: {fileID: 61952342224314796}
   - component: {fileID: 114750916217324004}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: StationaryPlatform
   m_TagString: ground
   m_Icon: {fileID: 0}

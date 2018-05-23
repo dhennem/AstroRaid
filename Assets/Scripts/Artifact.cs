@@ -21,7 +21,7 @@ public class Artifact : MonoBehaviour {
 		artifactsCollected = 0;//initially at 0
 		playerCollider = GameObject.Find("Player").GetComponent<BoxCollider2D>();
 		Physics2D.IgnoreCollision(playerCollider, artifactCollider, true);  //prevent player and artifact from colliding to ensure smooth movement, but trigger still works
-		
+		portalSpawner = FindObjectOfType<PortalSpawner>();
 	}
 	
 	// Update is called once per frame

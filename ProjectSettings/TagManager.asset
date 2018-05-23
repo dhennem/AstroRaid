@@ -8,6 +8,8 @@ TagManager:
   - PlayerShot
   - EnemyShot
   - Shield
+  - RightWall
+  - LeftWall
   layers:
   - Default
   - TransparentFX
@@ -22,7 +24,7 @@ TagManager:
   - NeutralObjects
   - PlayerShots
   - EnemyShots
-  - 
+  - GroundsAndPlatforms
   - 
   - 
   - 

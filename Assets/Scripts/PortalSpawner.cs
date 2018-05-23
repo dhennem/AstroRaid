@@ -19,6 +19,8 @@ public class PortalSpawner : MonoBehaviour {
 	public void SpawnWinPortal(){
 		Vector3 spawnPos = transform.GetChild(0).transform.position;
 		GameObject portalSpawn = Instantiate(portal, spawnPos, Quaternion.identity) as GameObject;
-		print("portal should be spawned"); 
+		print("portal should be spawned");
+		print(spawnPos); 
+
 	}
 }
