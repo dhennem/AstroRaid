@@ -383,12 +383,12 @@ public class PlayerController : MonoBehaviour {
 	void ActivateJetpack(){
 		print("jetpack activated");
 		hasJetpackActivated = true;
-		Invoke("DeactivateSuperpower", 20f);
+		Invoke("DeactivateSuperpower", 7f);
 	}
 	void ActivateSuperjump(){
 		print("superjump activated");
 		hasSuperjumpActivated = true;
-		Invoke("DeactivateSuperpower", 5f); //this superpower lasts for 5 seconds. Once it is over, the superpower button disappears
+		Invoke("DeactivateSuperpower", 7f); //this superpower lasts for 7 seconds. Once it is over, the superpower button disappears
 	}
 
 

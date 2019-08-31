@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 238f3fe26e30a448ba7ec52ac5b0fd33
+timeCreated: 1523253231
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Space Ranger Title
+  fontNames:
+  - Space Ranger Title
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
